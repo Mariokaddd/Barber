@@ -12,16 +12,16 @@
         [Required]
         [MinLength(2)]
         [MaxLength(50)]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         [Required]
         [MinLength(10)]
         [MaxLength(300)]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         [Required]
         [Url]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } = null!;
 
         [Required]
         public GenderType Gender { get; set; }

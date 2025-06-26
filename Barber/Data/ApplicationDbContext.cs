@@ -3,7 +3,6 @@ using Barber.Data.models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Barber.Data.enums;
-using Barber.Data.models;
 
 namespace Barber.Data
 {
@@ -106,6 +105,42 @@ namespace Barber.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+
+            //seedData
+            builder.Entity<Hairstyle>().HasData(
+        new Hairstyle
+        {
+            Id = 1,
+            Title = "Buzzcut",
+            Description = "Къса машинка подстрижка с дължина около 2–3 мм, която акцентира върху формата на главата и е лесна за поддръжка.",
+            ImageUrl = "/images/hairstyles/BuzzCut.jpg",
+            Gender = GenderType.Male
+        },
+        new Hairstyle
+        {
+            Id = 2,
+            Title = "Момичешки плитки",
+            Description = "Дълги плитки за женствен и романтичен вид.",
+            ImageUrl = "/images/hairstyles/plitki.jpg",
+            Gender = GenderType.Female
+        },
+        new Hairstyle
+        {
+            Id = 3,
+            Title = "Мъжки квифф",
+            Description = "Стилна прическа с обем отпред и по-къси страни.",
+            ImageUrl = "/images/hairstyles/kviff.jpg",
+            Gender = GenderType.Male
+        },
+        new Hairstyle
+        {
+            Id = 4,
+            Title = "Женски боб",
+            Description = "Къса и елегантна боб прическа до брадичката.",
+            ImageUrl = "/images/hairstyles/Bob.jpg",
+            Gender = GenderType.Female
+        }
+    );
         }
 
     }
