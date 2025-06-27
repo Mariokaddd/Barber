@@ -33,6 +33,7 @@ namespace Barber.Controllers
                 .Where(h => h.Gender == parsedGender)
                 .ToList();
 
+            ViewBag.Gender = gender;
             return View(hairstyles);
         }
 

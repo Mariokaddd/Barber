@@ -1,6 +1,7 @@
 ﻿namespace Barber.Data.models
 {
     using Barber.Data.enums;
+    using Barber.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,6 +28,7 @@
         public Gender Gender { get; set; }
 
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
     }
 
 }

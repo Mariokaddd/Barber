@@ -108,6 +108,27 @@ namespace Barber.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+            builder.Entity<Favorite>(entity =>
+            {
+                entity.HasKey(f => f.Id);
+
+                entity.Property(f => f.UserId)
+                      .IsRequired();
+
+                entity.Property(f => f.HairstyleId)
+                      .IsRequired();
+
+                entity.HasOne(f => f.User)
+                      .WithMany(u => u.Favorites)
+                      .HasForeignKey(f => f.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(f => f.Hairstyle)
+                      .WithMany(h => h.Favorites)
+                      .HasForeignKey(f => f.HairstyleId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
 
             //seedData
             builder.Entity<Hairstyle>().HasData(
