@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Barber.Data.models.Hairstyle>
+
+@{
+    ViewData["Title"] = "Hairstyles";
+}
+
+<h1 class="text-center">Available Hairstyles</h1>
+
+<div class="row">
+    @foreach (var hairstyle in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@hairstyle.ImageUrl" alt="@hairstyle.Title" style="width: 200px; height: auto;" class="img-thumbnail" />
+                <div class="card-body">
+                    <h5 class="card-title">@hairstyle.Title</h5>
+                    <p class="card-text">@hairstyle.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<a href="javascript:history.back()" class="btn-back">
+    ← Back
+</a>
+
+<style>
+    .btn-back {
+        position: fixed;
+        bottom: 70px;
+        left: 20px;
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+</style>
+

@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Choose Gender";
+}
+
+<h2 class="text-center mb-4">Choose Your Gender</h2>
+
+<div class="gender-selection">
+    <a asp-controller="Hairstyles" asp-action="ByGender" asp-route-gender="Male" class="gender-card male">
+        <img src="/images/hairstyles/ManAndBlueBackground.jpg" alt="Male">
+        <span>Male</span>
+    </a>
+
+    <a asp-controller="Hairstyles" asp-action="ByGender" asp-route-gender="Female" class="gender-card female">
+        <img src="/images/hairstyles/WomanPhotoPinkBackground.jpg" alt="Female">
+        <span>Female</span>
+    </a>
+</div>
+<a href="javascript:history.back()" class="btn-back">
+    ← Back
+</a>
+
+<style>
+    .btn-back {
+        position: fixed;
+        bottom: 70px;
+        left: 20px;
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+</style>
+
+
+<style>
+    .gender-selection {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .gender-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+        background: #333;
+        padding: 20px;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 200px;
+        text-align: center;
+    }
+
+        .gender-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .gender-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+</style>

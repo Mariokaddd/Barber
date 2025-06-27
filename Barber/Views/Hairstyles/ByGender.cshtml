@@ -1,0 +1,42 @@
+﻿@using Barber.Data.models
+@model List<Hairstyle>
+
+<h2 class="text-center mt-4">Hairstyles</h2>
+<div class="row mt-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-2 text-center mb-4">
+            <div class="card shadow-sm">
+                <img src="@item.ImageUrl" class="card-img-top" style="height:150px; object-fit:cover;" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<a href="javascript:history.back()" class="btn-back">
+    ← Back
+</a>
+
+<style>
+    .btn-back {
+        position: fixed;
+        bottom: 70px;
+        left: 20px;
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+</style>
+

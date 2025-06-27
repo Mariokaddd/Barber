@@ -24,7 +24,7 @@
         public string ImageUrl { get; set; } = null!;
 
         [Required]
-        public GenderType Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }

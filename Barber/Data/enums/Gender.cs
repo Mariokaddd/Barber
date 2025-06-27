@@ -1,6 +1,6 @@
 ﻿namespace Barber.Data.enums
 {
-    public enum GenderType
+    public enum Gender
     {
         Male = 1,
         Female = 2

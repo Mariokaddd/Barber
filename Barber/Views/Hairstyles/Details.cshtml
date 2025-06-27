@@ -1,0 +1,34 @@
+﻿@using Barber.Data.models
+@model Hairstyle
+
+<div class="text-center mt-5">
+    <h2>@Model.Title</h2>
+    <img src="@Model.ImageUrl" style="max-width: 400px; border-radius: 10px;" class="my-3" />
+    <p class="lead">@Model.Description</p>
+
+    <a class="btn btn-success" asp-controller="Appointments" asp-action="Create" asp-route-hairstyleId="@Model.Id">Reserve</a>
+</div>
+<a href="javascript:history.back()" class="btn-back">
+    ← Back
+</a>
+
+<style>
+    .btn-back {
+        position: fixed;
+        bottom: 70px;
+        left: 20px;
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+</style>
+
