@@ -1,8 +1,223 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Barber.Data.models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    :root {
+        --bg-light: #f0f8ff;
+        --bg-dark: #121212;
+        --text-light: #000;
+        --text-dark: #eee;
+        --card-light: #fff;
+        --card-dark: #1e1e1e;
+        --card-border-dark: #333;
+    }
+
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-light);
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+    .hero {
+        background: linear-gradient(to right, #d0e6f6, #f0f8ff);
+        padding: 100px 20px 60px;
+        text-align: center;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        transition: background 0.3s;
+    }
+
+    body.dark-mode .hero {
+        background: #1e1e1e;
+    }
+
+    .dark-toggle-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    #darkModeToggle {
+        background-color: transparent;
+        color: inherit;
+        border: 2px solid #888;
+        border-radius: 12px;
+        padding: 8px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+        #darkModeToggle:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+    .trend-card {
+        background-color: var(--card-light);
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    body.dark-mode .trend-card {
+        background-color: var(--card-dark);
+        border: 1px solid var(--card-border-dark);
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .trend-card img {
+        height: 220px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .trend-card h5 {
+        color: inherit;
+    }
+
+    .btn-glow {
+        box-shadow: 0 0 15px rgba(0,123,255,0.5);
+        transition: all 0.3s ease;
+    }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(0,123,255,0.7);
+            transform: scale(1.05);
+        }
+
+    .info-section {
+        margin-top: 70px;
+        margin-bottom: 60px;
+    }
+
+    .icon-circle {
+        background-color: #e0f0ff;
+        border-radius: 50%;
+        padding: 20px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    body.dark-mode .icon-circle {
+        background-color: #444;
+    }
+
+    .dark-mode .trend-card h5 {
+        color: rgba(0,123,255,0.7); /* Light blue color for text in dark mode */
+    }
+
+</style>
+
+<div class="hero">
+    <h1 class="display-4 fw-bold text-primary">Barber ✂️ – Sharp Looks, Sharp Confidence</h1>
+    <p class="lead mt-3">Step into your style. Choose. Book. Transform.</p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a class="btn btn-primary btn-lg btn-glow"
+           asp-controller="Hairstyles" asp-action="ChooseGender">
+            Browse Hairstyles
+        </a>
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-outline-secondary btn-lg"
+               asp-area="Identity" asp-page="/Account/Login">
+                Login to Reserve
+            </a>
+        }
+    </div>
 </div>
+
+<div class="dark-toggle-container">
+    <button id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+</div>
+
+<div class="row info-section text-center">
+    <div class="col-md-4">
+        <div class="icon-circle">
+            <i class="fa-solid fa-scissors fa-2x text-primary"></i>
+        </div>
+        <h5 class="fw-bold">Elite Barber</h5>
+        <p>One master crafts every cut with precision.</p>
+    </div>
+    <div class="col-md-4">
+        <div class="icon-circle">
+            <i class="fa-solid fa-clock fa-2x text-primary"></i>
+        </div>
+        <h5 class="fw-bold">Book in Seconds</h5>
+        <p>Quick, seamless scheduling without the wait.</p>
+    </div>
+    <div class="col-md-4">
+        <div class="icon-circle">
+            <i class="fa-solid fa-heart fa-2x text-primary"></i>
+        </div>
+        <h5 class="fw-bold">Favorite Styles</h5>
+        <p>Save the looks you love and revisit anytime.</p>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<h2 class="text-center mb-4">🔥 Trending Hairstyles</h2>
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card trend-card text-center">
+            <img src="~/images/hairstyles/kviff.jpg" alt="Fluffy">
+            <div class="card-body">
+                <h5>Fluffy</h5>
+                <a class="btn btn-outline-primary btn-sm"
+                   asp-controller="Hairstyles" asp-action="Details" asp-route-id="3">
+                    View
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card trend-card text-center">
+            <img src="~/images/hairstyles/BuzzCut.jpg" alt="BuzzCut">
+            <div class="card-body">
+                <h5>BuzzCut</h5>
+                <a class="btn btn-outline-primary btn-sm"
+                   asp-controller="Hairstyles" asp-action="Details" asp-route-id="1">
+                    View
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card trend-card text-center">
+            <img src="~/images/hairstyles/Bob.jpg" alt="BobCut">
+            <div class="card-body">
+                <h5>BobCut</h5>
+                <a class="btn btn-outline-primary btn-sm"
+                   asp-controller="Hairstyles" asp-action="Details" asp-route-id="4">
+                    View
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+
+        const btn = document.getElementById("darkModeToggle");
+        if (document.body.classList.contains("dark-mode")) {
+            btn.innerHTML = "☀️ Light Mode";
+        } else {
+            btn.innerHTML = "🌙 Dark Mode";
+        }
+    }
+</script>
