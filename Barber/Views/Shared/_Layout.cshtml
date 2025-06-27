@@ -4,53 +4,125 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Barber</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Barber.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar-custom {
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+            border-bottom: 1px solid #dcdcdc;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .navbar-brand {
+            font-size: 26px;
+            font-weight: 700;
+            color: #4A90E2 !important;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .navbar-brand i {
+                font-size: 22px;
+                color: #4A90E2;
+            }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: #444 !important;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .nav-link:hover {
+                color: #4A90E2 !important;
+            }
+
+        .heart-icon {
+            color: #4A90E2;
+        }
+
+        .login-btn {
+            padding: 6px 14px;
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            background-color: transparent;
+            color: #4A90E2;
+            transition: 0.3s ease;
+            text-decoration: none;
+        }
+
+            .login-btn:hover {
+                background-color: #4A90E2;
+                color: white;
+            }
+
+        .btn-outline-danger {
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light navbar-custom mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Barber</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <!-- Custom Logo with Scissors AFTER text -->
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    Barber <i class="fa-solid fa-scissors"></i>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Hairstyles" asp-action="ChooseGender">Hairstyles</a>
+                            <a class="nav-link" asp-controller="Hairstyles" asp-action="ChooseGender">Hairstyles</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Favorites" asp-action="Index">Favorites</a>
+                            <a class="nav-link" asp-controller="Favorites" asp-action="Index">
+                                <i class="fa-solid fa-heart heart-icon"></i> Favorites
+                            </a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <div class="d-flex align-items-center">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Barber - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted mt-4">
+        <div class="container text-center">
+            &copy; 2025 - Barber - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
