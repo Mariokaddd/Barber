@@ -1,8 +1,9 @@
 ﻿// Data/ApplicationDbContext.cs
+using Barber.Data.enums;
 using Barber.Data.models;
+using Barber.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Barber.Data.enums;
 
 namespace Barber.Data
 {
@@ -15,6 +16,8 @@ namespace Barber.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
