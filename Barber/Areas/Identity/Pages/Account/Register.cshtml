@@ -1,0 +1,123 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- CSS for background and animations -->
+<style>
+    /* Fullscreen background */
+    body {
+        margin: 0;
+        padding: 0;
+        background: url('/images/hairstyles/LoginPhoto.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* Container that holds the form */
+    .register-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 15px;
+    }
+
+    /* Animated form container */
+    .register-container {
+        background-color: rgba(255, 255, 255, 0.96);
+        padding: 40px;
+        border-radius: 20px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 1s ease;
+    }
+
+        /* Buttons animation */
+        .register-container button {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .register-container button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+    /* Animation Keyframes */
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .external-login-section {
+        margin-top: 30px;
+        text-align: center;
+        animation: fadeInUp 1.5s ease;
+    }
+
+        .external-login-section button {
+            margin: 6px;
+        }
+</style>
+
+<!-- HTML content -->
+<div class="register-page">
+    <div class="register-container">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2 class="text-center mb-4">Create a new account</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
+                <label asp-for="Input.Email">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="password" />
+                <label asp-for="Input.Password">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="confirm password" />
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+
+        @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+        {
+            <div class="external-login-section">
+                <h5 class="mt-4">Or use another service</h5>
+                <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    @foreach (var provider in Model.ExternalLogins!)
+                    {
+                        <button type="submit" class="btn btn-outline-dark" name="provider" value="@provider.Name">
+                            @provider.DisplayName
+                        </button>
+                    }
+                </form>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
