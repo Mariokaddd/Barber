@@ -13,7 +13,21 @@
 
     @RenderSection("Styles", required: false)
 
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener("click", function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth"
+                });
+            });
+        });
+    </script>
+
+
     <style>
+
+        
         body {
             font-family: 'Segoe UI', sans-serif;
         }
@@ -120,6 +134,7 @@
     </div>
 
     <footer class="border-top footer text-muted mt-4">
+
         <div class="container text-center">
             &copy; 2025 - Barber - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

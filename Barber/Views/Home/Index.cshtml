@@ -63,31 +63,6 @@
             background-color: rgba(255, 255, 255, 0.05);
         }
 
-    .trend-card {
-        background-color: var(--card-light);
-        border: 1px solid #ddd;
-        border-radius: 12px;
-        overflow: hidden;
-        transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
-        box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    body.dark-mode .trend-card {
-        background-color: var(--card-dark);
-        border: 1px solid var(--card-border-dark);
-        box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-
-    .trend-card img {
-        height: 220px;
-        object-fit: cover;
-        width: 100%;
-    }
-
-    .trend-card h5 {
-        color: inherit;
-    }
-
     .btn-glow {
         box-shadow: 0 0 15px rgba(0,123,255,0.5);
         transition: all 0.3s ease;
@@ -115,8 +90,12 @@
         background-color: #444;
     }
 
-    .dark-mode .trend-card h5 {
-        color: rgba(0,123,255,0.7); /* Light blue color for text in dark mode */
+    #map {
+        height: 400px;
+        width: 100%;
+        border-radius: 20px;
+        margin-bottom: 60px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
 
 </style>
@@ -169,55 +148,35 @@
 
 <hr class="my-5">
 
-<h2 class="text-center mb-4">🔥 Trending Hairstyles</h2>
-<div class="row g-4 mb-5">
-    <div class="col-md-4">
-        <div class="card trend-card text-center">
-            <img src="~/images/hairstyles/kviff.jpg" alt="Fluffy">
-            <div class="card-body">
-                <h5>Fluffy</h5>
-                <a class="btn btn-outline-primary btn-sm"
-                   asp-controller="Hairstyles" asp-action="Details" asp-route-id="3">
-                    View
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card trend-card text-center">
-            <img src="~/images/hairstyles/BuzzCut.jpg" alt="BuzzCut">
-            <div class="card-body">
-                <h5>BuzzCut</h5>
-                <a class="btn btn-outline-primary btn-sm"
-                   asp-controller="Hairstyles" asp-action="Details" asp-route-id="1">
-                    View
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card trend-card text-center">
-            <img src="~/images/hairstyles/Bob.jpg" alt="BobCut">
-            <div class="card-body">
-                <h5>BobCut</h5>
-                <a class="btn btn-outline-primary btn-sm"
-                   asp-controller="Hairstyles" asp-action="Details" asp-route-id="4">
-                    View
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+<h2 class="text-center mb-4">📍 Our Location</h2>
+<div id="map"></div>
 
 <script>
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
 
         const btn = document.getElementById("darkModeToggle");
-        if (document.body.classList.contains("dark-mode")) {
-            btn.innerHTML = "☀️ Light Mode";
-        } else {
-            btn.innerHTML = "🌙 Dark Mode";
-        }
+        btn.innerHTML = document.body.classList.contains("dark-mode")
+            ? "☀️ Light Mode"
+            : "🌙 Dark Mode";
     }
+
+    function initMap() {
+        const barberShop =  { lat: 42.280583, lng: 22.679743 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: barberShop
+        });
+        const marker = new google.maps.Marker({
+            position: barberShop,
+            map: map,
+            title: "Barber Shop"
+        });
+    }
+</script>
+
+<!-- ✅ Replace YOUR_API_KEY below with your actual Google Maps API key -->
+<script async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN1JZopIsyDEmO_umHX4lJpMI_wPz7moc&callback=initMap">
 </script>
