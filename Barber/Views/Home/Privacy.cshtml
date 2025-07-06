@@ -2,17 +2,80 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<div class="container my-5">
+<style>
+    .privacy-container {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        line-height: 1.8;
+        font-size: 16px;
+        color: #333;
+    }
+
+        .privacy-container h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .privacy-container h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        .privacy-container ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+
+            .privacy-container ul li {
+                margin-bottom: 10px;
+            }
+
+        .privacy-container p {
+            margin-bottom: 15px;
+        }
+
+        .privacy-container small {
+            color: #888;
+        }
+
+    @@media (max-width: 768px) {
+        .privacy-container
+
+    {
+        padding: 30px 15px;
+    }
+
+    .privacy-container h1 {
+        font-size: 28px;
+    }
+
+    .privacy-container h2 {
+        font-size: 20px;
+    }
+
+    }
+</style>
+
+<div class="privacy-container">
     <h1 class="mb-4">Privacy Policy</h1>
 
     <p><small class="text-muted">Last updated: June 27, 2025</small></p>
 
-    <section class="mb-4">
+    <section>
         <h2>1. Introduction</h2>
         <p>Welcome to <strong>Barber</strong>! Your privacy is very important to us. This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data.</p>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>2. Information We Collect</h2>
         <ul>
             <li><strong>Personal Information:</strong> When you register or book an appointment, we collect your name, email address, phone number, and any other information you provide.</li>
@@ -21,7 +84,7 @@
         </ul>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>3. How We Use Your Information</h2>
         <ul>
             <li>To provide and manage your appointments.</li>
@@ -31,7 +94,7 @@
         </ul>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>4. How We Share Your Information</h2>
         <ul>
             <li>We do <strong>not</strong> sell or rent your personal data.</li>
@@ -40,7 +103,7 @@
         </ul>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>5. Your Rights</h2>
         <ul>
             <li>You have the right to access, update, or delete your personal information.</li>
@@ -49,27 +112,27 @@
         </ul>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>6. Security</h2>
         <p>We implement industry-standard security measures to protect your data, but no method is 100% secure. Please help us by choosing strong passwords and protecting your account information.</p>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>7. Cookies and Tracking Technologies</h2>
         <p>Our website uses cookies and similar tracking technologies to enhance your experience. You can control or disable cookies through your browser settings.</p>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>8. Children’s Privacy</h2>
         <p>Our services are not intended for children under 16. We do not knowingly collect personal data from children.</p>
     </section>
 
-    <section class="mb-4">
+    <section>
         <h2>9. Changes to This Privacy Policy</h2>
         <p>We may update this policy occasionally. We will notify you by updating the date above and, where appropriate, by email or site notification.</p>
     </section>
 
-    <section class="mb-5">
+    <section class="mb-2">
         <h2>10. Contact Us</h2>
         <p>If you have questions or concerns about your privacy, please contact us at:</p>
         <ul>
