@@ -22,13 +22,18 @@
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info flex-fill">
                                 Details
                             </a>
-                            <form asp-controller="Favorites" asp-action="Add" method="post" class="m-0 p-0 flex-fill">
-                                <input type="hidden" name="hairstyleId" value="@item.Id" />
-                                <input type="hidden" name="gender" value="@gender" />
-                                <button type="submit" class="btn btn-sm btn-warning w-100">
-                                    ♡ Favorites
-                                </button>
-                            </form>
+                            @using Microsoft.AspNetCore.Authorization
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <form asp-controller="Favorites" asp-action="Add" method="post" class="m-0 p-0 flex-fill">
+                                    <input type="hidden" name="hairstyleId" value="@item.Id" />
+                                    <input type="hidden" name="gender" value="@gender" />
+                                    <button type="submit" class="btn btn-sm btn-warning w-100">
+                                        ♡ Favorites
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>

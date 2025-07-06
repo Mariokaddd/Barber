@@ -2,12 +2,14 @@
 using Barber.Data.enums;
 using Barber.Data.models;
 using Barber.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Barber.Controllers
 {
+    [Authorize]
     public class FavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +20,7 @@ namespace Barber.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -31,6 +33,7 @@ namespace Barber.Controllers
             return View(favorites);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int hairstyleId, string gender)
@@ -60,7 +63,7 @@ namespace Barber.Controllers
             return RedirectToAction("ByGender", "Hairstyles", new { gender });
         }
 
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Remove(int hairstyleId)
         {
