@@ -6,7 +6,13 @@
     <img src="@Model.ImageUrl" style="max-width: 400px; border-radius: 10px;" class="my-3" />
     <p class="lead">@Model.Description</p>
 
-    <a class="btn btn-success" asp-controller="Appointments" asp-action="Create" asp-route-hairstyleId="@Model.Id">Reserve</a>
+    <a asp-controller="Reservation"
+       asp-action="Calendar"
+       asp-route-hairstyleId="@Model.Id"
+       class="btn btn-primary">
+        Reserve
+    </a>
+
 </div>
 <a href="javascript:history.back()" class="btn-back">
     ← Back

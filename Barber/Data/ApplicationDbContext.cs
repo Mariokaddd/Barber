@@ -1,4 +1,4 @@
-﻿// Data/ApplicationDbContext.cs
+﻿
 using Barber.Data.enums;
 using Barber.Data.models;
 using Barber.Data.Models;
@@ -17,11 +17,58 @@ namespace Barber.Data
         public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<AdminSchedule> AdminSchedules { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<WorkingSchedule>(entity =>
+            {
+                entity.HasKey(ws => ws.Id);
+
+                entity.Property(ws => ws.Date)
+                      .IsRequired();
+
+                entity.Property(ws => ws.Time)
+                      .IsRequired();
+
+                entity.HasIndex(ws => new { ws.Date, ws.Time })
+                      .IsUnique();
+            });
+
+            builder.Entity<Appointment>(entity =>
+            {
+                entity.HasKey(a => a.Id);
+
+                entity.Property(a => a.Date)
+                      .IsRequired();
+
+                entity.Property(a => a.Time)
+                      .IsRequired();
+
+                entity.Property(a => a.UserId)
+                      .IsRequired();
+
+                entity.Property(a => a.HairstyleId)
+                      .IsRequired();
+
+                entity.HasIndex(a => new { a.Date, a.Time })
+                      .IsUnique();
+
+                entity.HasOne(a => a.User)
+                      .WithMany(u => u.Appointments)
+                      .HasForeignKey(a => a.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.Hairstyle)
+                      .WithMany(h => h.Appointments)
+                      .HasForeignKey(a => a.HairstyleId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
 
             builder.Entity<Appointment>(entity =>
             {
@@ -63,7 +110,6 @@ namespace Barber.Data
                       .IsUnique();
             });
 
-            // === Hairstyle Configuration ===
             builder.Entity<Hairstyle>(entity =>
             {
                 entity.HasKey(h => h.Id);

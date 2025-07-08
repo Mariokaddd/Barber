@@ -1,0 +1,31 @@
+﻿@using Barber.Data.models
+@model IEnumerable<Appointment>
+
+<h2 class="text-center my-4">Моите резервации</h2>
+
+@if (!Model.Any())
+{
+    <p class="text-center text-muted">Все още нямате резервации.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Час</th>
+                <th>Прическа</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Date.ToShortDateString()</td>
+                    <td>@r.Time.ToString(@"hh\:mm")</td>
+                    <td>@r.Hairstyle.Title</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

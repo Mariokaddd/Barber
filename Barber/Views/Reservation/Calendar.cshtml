@@ -1,0 +1,147 @@
+﻿@model Barber.Models.CalendarViewModel
+@{
+    var monthStart = Model.MonthStart;
+    var today = DateTime.Today;
+    var prevMonth = monthStart.AddMonths(-1);
+    var nextMonth = monthStart.AddMonths(1);
+    int hid = ViewBag.HairstyleId;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    @if (prevMonth >= new DateTime(today.Year, today.Month, 1))
+    {
+        <button class="btn btn-sm btn-outline-secondary"
+                asp-action="Calendar"
+                asp-route-year="@prevMonth.Year"
+                asp-route-month="@prevMonth.Month"
+                asp-route-hairstyleId="@hid">
+            ←
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-sm btn-outline-secondary" disabled>←</button>
+    }
+
+    <h4>@monthStart.ToString("MMMM yyyy", new System.Globalization.CultureInfo("bg-BG"))</h4>
+
+    <button class="btn btn-sm btn-outline-secondary"
+            asp-action="Calendar"
+            asp-route-year="@nextMonth.Year"
+            asp-route-month="@nextMonth.Month"
+            asp-route-hairstyleId="@hid">
+        →
+    </button>
+</div>
+
+<div id="calendarGrid" class="calendar-grid">
+    @foreach (var day in Model.Days)
+    {
+        bool past = day.Date < today;
+        string css = past
+        ? "calendar-day disabled"
+        : "calendar-day";
+        <button type="button"
+                class="@css"
+                data-date="@day.Date:yyyy-MM-dd"
+                data-hairstyle="@hid"
+                @(past ? "disabled" : "")>
+            <div class="day-number">@day.Date.Day</div>
+            @if (day.FreeSlotCount > 0)
+            {
+                <span class="badge bg-primary">@day.FreeSlotCount</span>
+            }
+        </button>
+    }
+</div>
+
+<hr />
+<div id="slotsContainer" class="mt-4 text-center">
+    <p class="text-muted">Кликни върху дата, за да видиш свободните часове</p>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const grid = document.getElementById("calendarGrid");
+          const slotsContainer = document.getElementById("slotsContainer");
+
+          // Делегиране: слушаме pointerdown, работи и за touchpad, мишка и тъч
+          grid.addEventListener("pointerdown", async e => {
+            const btn = e.target.closest("button.calendar-day");
+            if (!btn || btn.disabled) return;
+
+            // 1. Премахваме селектиране
+            grid.querySelectorAll("button.calendar-day")
+                .forEach(d => d.classList.remove("selected"));
+
+            // 2. Маркираме текущата
+            btn.classList.add("selected");
+
+            // 3. AJAX зареждане
+            const date = btn.dataset.date;
+            const hid  = btn.dataset.hairstyle;
+            try {
+              const res = await fetch(
+                `/Reservation/SlotsAjax?date=${date}&hairstyleId=${hid}`
+              );
+              if (!res.ok) throw "Грешка при зареждане на слотове";
+              slotsContainer.innerHTML = await res.text();
+            } catch (err) {
+              slotsContainer.innerHTML = `<p class="text-danger">${err}</p>`;
+            }
+          });
+        });
+    </script>
+}
+
+
+
+
+<style>
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7,1fr);
+        gap: 8px;
+    }
+
+    .calendar-day {
+        display: inline-block;
+        width: 40px;
+        padding: 8px;
+        margin: 4px;
+        border-radius: 6px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+    }
+
+        .calendar-day:hover {
+            background-color: #e2f0ff;
+            transform: translateY(-2px);
+        }
+
+        .calendar-day.selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: default;
+        }
+
+
+    .day-number {
+        font-size: 1.2rem;
+    }
+
+    .badge {
+        background: #007bff;
+        color: white;
+        border-radius: 12px;
+        padding: 2px 8px;
+        font-size: 0.8rem;
+        margin-top: 4px;
+    }
+</style>

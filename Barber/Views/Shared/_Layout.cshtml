@@ -123,6 +123,13 @@
                                 </a>
                             </li>
                         }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li><a asp-controller="Schedule" asp-action="Create">Настрой График</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link" asp-controller="Reservation" asp-action="Calendar">Запази час</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Reservation" asp-action="MyBookings">Моите резервации</a></li>
+
                     </ul>
                     <div class="d-flex align-items-center">
                         <partial name="_LoginPartial" />

@@ -1,5 +1,6 @@
 using Barber.Data;
 using Barber.Data.models;
+using Barber.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ namespace Barber
                 options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+            builder.Services.AddScoped<ScheduleService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,6 +36,8 @@ namespace Barber
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

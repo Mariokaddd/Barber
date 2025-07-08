@@ -1,0 +1,22 @@
+﻿@model Barber.Models.SlotsViewModel
+
+@if (!Model.AvailableSlots.Any())
+{
+    <p class="text-center text-muted">Няма свободни часове.</p>
+}
+else
+{
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+        @foreach (var ts in Model.AvailableSlots)
+        {
+            <form asp-action="Confirm" method="post" class="d-inline">
+                <input type="hidden" name="date" value="@Model.Date:yyyy-MM-dd" />
+                <input type="hidden" name="time" value="@ts" />
+                <input type="hidden" name="hairstyleId" value="@Model.HairstyleId" />
+                <button type="submit" class="btn btn-outline-success m-1">
+                    @ts.ToString(@"hh\:mm")
+                </button>
+            </form>
+        }
+    </div>
+}

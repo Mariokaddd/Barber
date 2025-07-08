@@ -1,0 +1,30 @@
+﻿@model SlotsViewModel
+
+<h2 class="my-4 text-center">Свободни часове за @Model.Date.ToShortDateString()</h2>
+
+@if (!Model.AvailableSlots.Any())
+{
+    <p class="text-muted text-center">Няма свободни часове.</p>
+}
+else
+{
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+        @foreach (var ts in Model.AvailableSlots)
+        {
+            <form asp-action="Confirm" method="post" class="d-inline">
+                <input type="hidden" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="time" value="@ts" />
+                <input type="hidden" name="hairstyleId" value="@Model.HairstyleId" />
+                <button type="submit" class="btn btn-outline-success m-1">
+                    @ts.ToString(@"hh\:mm")
+                </button>
+            </form>
+        }
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3 text-center">
+        @TempData["Error"]
+    </div>
+}
