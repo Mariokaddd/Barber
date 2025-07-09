@@ -29,7 +29,7 @@ namespace Barber.Controllers
             int y = year ?? today.Year;
             int m = month ?? today.Month;
 
-            // Ако искат да върнат назад преди сегашния месец — принудително оставяме на днешния
+            // Забраняваме навигиране преди текущия месец:
             if (new DateTime(y, m, 1) < new DateTime(today.Year, today.Month, 1))
             {
                 y = today.Year;

@@ -1,42 +1,42 @@
 ﻿@model Barber.Models.CalendarViewModel
 @{
-    var monthStart = Model.MonthStart;
-    var today = DateTime.Today;
-    var prevMonth = monthStart.AddMonths(-1);
-    var nextMonth = monthStart.AddMonths(1);
+    // Начало на текущия показван месец
+    var ms = Model.MonthStart;
+    var prevMonth = ms.AddMonths(-1);
+    var nextMonth = ms.AddMonths(1);
     int hid = ViewBag.HairstyleId;
+    DateTime today = DateTime.Today;      // текуща дата
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
+    @* ← Предишен месец, само ако не минава преди първи на днешния месец *@
     @if (prevMonth >= new DateTime(today.Year, today.Month, 1))
     {
-        <button class="btn btn-sm btn-outline-secondary"
-                asp-action="Calendar"
-                asp-route-year="@prevMonth.Year"
-                asp-route-month="@prevMonth.Month"
-                asp-route-hairstyleId="@hid">
-            ←
-        </button>
+        <a asp-action="Calendar"
+           asp-route-year="@prevMonth.Year"
+           asp-route-month="@prevMonth.Month"
+           asp-route-hairstyleId="@hid"
+           class="btn btn-sm btn-outline-secondary">←</a>
     }
     else
     {
         <button class="btn btn-sm btn-outline-secondary" disabled>←</button>
     }
 
-    <h4>@monthStart.ToString("MMMM yyyy", new System.Globalization.CultureInfo("bg-BG"))</h4>
+    <h4 class="mx-3">@ms.ToString("MMMM yyyy", new System.Globalization.CultureInfo("bg-BG"))</h4>
 
-    <button class="btn btn-sm btn-outline-secondary"
-            asp-action="Calendar"
-            asp-route-year="@nextMonth.Year"
-            asp-route-month="@nextMonth.Month"
-            asp-route-hairstyleId="@hid">
-        →
-    </button>
+    @* → Следващ месец *@
+    <a asp-action="Calendar"
+       asp-route-year="@nextMonth.Year"
+       asp-route-month="@nextMonth.Month"
+       asp-route-hairstyleId="@hid"
+       class="btn btn-sm btn-outline-secondary">→</a>
 </div>
 
 <div id="calendarGrid" class="calendar-grid">
     @foreach (var day in Model.Days)
     {
+        // маркираме миналите дни
         bool past = day.Date < today;
         string css = past
         ? "calendar-day disabled"
@@ -47,7 +47,8 @@
                 data-hairstyle="@hid"
                 @(past ? "disabled" : "")>
             <div class="day-number">@day.Date.Day</div>
-            @if (day.FreeSlotCount > 0)
+            @* бадж само за бъдещи или днес *@
+            @if (day.FreeSlotCount > 0 && !past)
             {
                 <span class="badge bg-primary">@day.FreeSlotCount</span>
             }
@@ -56,6 +57,7 @@
 </div>
 
 <hr />
+
 <div id="slotsContainer" class="mt-4 text-center">
     <p class="text-muted">Кликни върху дата, за да видиш свободните часове</p>
 </div>
@@ -63,60 +65,56 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-          const grid = document.getElementById("calendarGrid");
-          const slotsContainer = document.getElementById("slotsContainer");
+            const grid = document.getElementById("calendarGrid");
+            const slotsContainer = document.getElementById("slotsContainer");
 
-          // Делегиране: слушаме pointerdown, работи и за touchpad, мишка и тъч
-          grid.addEventListener("pointerdown", async e => {
-            const btn = e.target.closest("button.calendar-day");
-            if (!btn || btn.disabled) return;
+            // Делегирано слушане на указателни събития (работи за мишка, тъч)
+            grid.addEventListener("pointerdown", async e => {
+                const btn = e.target.closest("button.calendar-day");
+                if (!btn || btn.disabled) return;
 
-            // 1. Премахваме селектиране
-            grid.querySelectorAll("button.calendar-day")
-                .forEach(d => d.classList.remove("selected"));
+                // 1. махаме селекция от всички
+                grid.querySelectorAll("button.calendar-day")
+                    .forEach(d => d.classList.remove("selected"));
 
-            // 2. Маркираме текущата
-            btn.classList.add("selected");
+                // 2. селектираме натиснатия
+                btn.classList.add("selected");
 
-            // 3. AJAX зареждане
-            const date = btn.dataset.date;
-            const hid  = btn.dataset.hairstyle;
-            try {
-              const res = await fetch(
-                `/Reservation/SlotsAjax?date=${date}&hairstyleId=${hid}`
-              );
-              if (!res.ok) throw "Грешка при зареждане на слотове";
-              slotsContainer.innerHTML = await res.text();
-            } catch (err) {
-              slotsContainer.innerHTML = `<p class="text-danger">${err}</p>`;
-            }
-          });
+                // 3. AJAX зареждане на слотове
+                const date = btn.dataset.date;
+                const hid  = btn.dataset.hairstyle;
+                try {
+                    const res = await fetch(
+                        `/Reservation/SlotsAjax?date=${date}&hairstyleId=${hid}`
+                    );
+                    if (!res.ok) throw "Грешка при зареждане на слотове";
+                    slotsContainer.innerHTML = await res.text();
+                } catch (err) {
+                    slotsContainer.innerHTML = `<p class="text-danger">${err}</p>`;
+                }
+            });
         });
     </script>
 }
 
-
-
-
 <style>
     .calendar-grid {
         display: grid;
-        grid-template-columns: repeat(7,1fr);
+        grid-template-columns: repeat(7, 1fr);
         gap: 8px;
     }
 
     .calendar-day {
-        display: inline-block;
-        width: 40px;
         padding: 8px;
-        margin: 4px;
         border-radius: 6px;
         text-align: center;
-        cursor: pointer;
         transition: background-color 0.2s, transform 0.1s;
+        border: none;
+        background: #f8f9fa;
+        cursor: pointer;
     }
 
-        .calendar-day:hover {
+        .calendar-day:hover:not(.disabled) {
             background-color: #e2f0ff;
             transform: translateY(-2px);
         }
@@ -127,10 +125,12 @@
         }
 
         .calendar-day.disabled {
-            color: #ccc;
+            background-color: #f1f1f1;
+            color: #bbb;
             cursor: default;
+            pointer-events: none;
+            opacity: 0.6;
         }
-
 
     .day-number {
         font-size: 1.2rem;
