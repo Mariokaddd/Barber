@@ -1,0 +1,37 @@
+﻿@model Barber.Models.ScheduleFormViewModel
+
+@{
+    ViewData["Title"] = "Добави свободен час";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post" class="w-50 mx-auto">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label"></label>
+        <input asp-for="Date" class="form-control" type="date" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Hour" class="form-label"></label>
+        <input asp-for="Hour" class="form-control" type="number" min="9" max="17" />
+        <span asp-validation-for="Hour" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="IsAvailable" value="true" />
+
+    <button type="submit" class="btn btn-success">Запази</button>
+    <a asp-action="Index" class="btn btn-secondary">Отказ</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

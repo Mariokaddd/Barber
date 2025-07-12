@@ -1,0 +1,14 @@
+﻿@using Barber.Data.models
+@model AdminSchedule
+
+<form asp-action="CreateSchedule" method="post">
+    <label>Дата:</label>
+    <input asp-for="Date" type="date" required />
+    <label>Начален час:</label>
+    <input asp-for="StartTime" type="time" required />
+    <label>Краен час:</label>
+    <input asp-for="EndTime" type="time" required />
+    <label>Продължителност на слот (в минути):</label>
+    <input asp-for="SlotDuration" type="time" value="01:00" required />
+    <button type="submit">Създай график</button>
+</form>

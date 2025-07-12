@@ -1,0 +1,16 @@
+﻿@using Barber.Data.models
+@model List<WorkingSchedule>
+
+<h2>Свободни часове</h2>
+@foreach (var slot in Model)
+{
+    <form method="post" asp-action="BookSlot">
+        <input type="hidden" name="id" value="@slot.Id" />
+        <select name="hairstyleId">
+            @* Зареди прически тук от ViewBag или TempData *@
+            <option value="1">Fade</option>
+            <option value="2">Buzz Cut</option>
+        </select>
+        <button>Запази @slot.Date.ToShortDateString() - @slot.Time</button>
+    </form>
+}

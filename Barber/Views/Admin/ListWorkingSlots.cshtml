@@ -1,0 +1,15 @@
+﻿@using Barber.Data.models
+@model List<WorkingSchedule>
+
+<h2>Работни слотове</h2>
+<table>
+    <tr><th>Дата</th><th>Час</th><th>Свободен ли е?</th></tr>
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>@s.Date.ToShortDateString()</td>
+            <td>@s.Time</td>
+            <td>@(s.IsAvailable ? "Да" : "Не")</td>
+        </tr>
+    }
+</table>

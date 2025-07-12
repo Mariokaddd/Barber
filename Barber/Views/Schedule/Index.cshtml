@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Barber.Models.ScheduleFormViewModel>
+
+@{
+    ViewData["Title"] = "Свободни часове";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Час</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var slot in Model)
+        {
+            <tr>
+                <td>@slot.Date.ToString("dd.MM.yyyy")</td>
+                <td>@slot.Hour</td>
+                <td>@(slot.IsAvailable ? "Свободен" : "Зает")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Добави нов свободен час</a>

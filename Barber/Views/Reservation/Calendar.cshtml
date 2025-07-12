@@ -1,21 +1,22 @@
 ﻿@model Barber.Models.CalendarViewModel
+
 @{
-    // Начало на текущия показван месец
+    ViewData["Title"] = "Календар за резервации";
     var ms = Model.MonthStart;
     var prevMonth = ms.AddMonths(-1);
     var nextMonth = ms.AddMonths(1);
-    int hid = ViewBag.HairstyleId;
-    DateTime today = DateTime.Today;      // текуща дата
+    DateTime today = DateTime.Today;
+    var ajaxUrl = Url.Action("SlotsAjax", "Reservation");
 }
 
+<h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
 <div class="d-flex justify-content-between align-items-center mb-3">
-    @* ← Предишен месец, само ако не минава преди първи на днешния месец *@
     @if (prevMonth >= new DateTime(today.Year, today.Month, 1))
     {
         <a asp-action="Calendar"
            asp-route-year="@prevMonth.Year"
            asp-route-month="@prevMonth.Month"
-           asp-route-hairstyleId="@hid"
            class="btn btn-sm btn-outline-secondary">←</a>
     }
     else
@@ -25,29 +26,22 @@
 
     <h4 class="mx-3">@ms.ToString("MMMM yyyy", new System.Globalization.CultureInfo("bg-BG"))</h4>
 
-    @* → Следващ месец *@
     <a asp-action="Calendar"
        asp-route-year="@nextMonth.Year"
        asp-route-month="@nextMonth.Month"
-       asp-route-hairstyleId="@hid"
        class="btn btn-sm btn-outline-secondary">→</a>
 </div>
 
 <div id="calendarGrid" class="calendar-grid">
     @foreach (var day in Model.Days)
     {
-        // маркираме миналите дни
         bool past = day.Date < today;
-        string css = past
-        ? "calendar-day disabled"
-        : "calendar-day";
+        string css = past ? "calendar-day disabled" : "calendar-day";
         <button type="button"
                 class="@css"
-                data-date="@day.Date:yyyy-MM-dd"
-                data-hairstyle="@hid"
+                data-date="@day.Date.ToString("yyyy-MM-dd")"
                 @(past ? "disabled" : "")>
             <div class="day-number">@day.Date.Day</div>
-            @* бадж само за бъдещи или днес *@
             @if (day.FreeSlotCount > 0 && !past)
             {
                 <span class="badge bg-primary">@day.FreeSlotCount</span>
@@ -64,33 +58,31 @@
 
 @section Scripts {
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", () => {
             const grid = document.getElementById("calendarGrid");
             const slotsContainer = document.getElementById("slotsContainer");
+            const ajaxUrl = '@ajaxUrl';
 
-            // Делегирано слушане на указателни събития (работи за мишка, тъч)
             grid.addEventListener("pointerdown", async e => {
                 const btn = e.target.closest("button.calendar-day");
                 if (!btn || btn.disabled) return;
 
-                // 1. махаме селекция от всички
+                // премахваме селекция от всички дни
                 grid.querySelectorAll("button.calendar-day")
                     .forEach(d => d.classList.remove("selected"));
-
-                // 2. селектираме натиснатия
+                // маркираме натиснатия
                 btn.classList.add("selected");
 
-                // 3. AJAX зареждане на слотове
                 const date = btn.dataset.date;
-                const hid  = btn.dataset.hairstyle;
                 try {
-                    const res = await fetch(
-                        `/Reservation/SlotsAjax?date=${date}&hairstyleId=${hid}`
-                    );
-                    if (!res.ok) throw "Грешка при зареждане на слотове";
+                    const res = await fetch(`${ajaxUrl}?date=${date}`);
+                    if (!res.ok) {
+                        const text = await res.text();
+                        throw text || res.statusText;
+                    }
                     slotsContainer.innerHTML = await res.text();
                 } catch (err) {
-                    slotsContainer.innerHTML = `<p class="text-danger">${err}</p>`;
+                    slotsContainer.innerHTML = `<p class="text-danger">Грешка при зареждане: ${err}</p>`;
                 }
             });
         });
@@ -108,10 +100,10 @@
         padding: 8px;
         border-radius: 6px;
         text-align: center;
-        transition: background-color 0.2s, transform 0.1s;
         border: none;
         background: #f8f9fa;
         cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
     }
 
         .calendar-day:hover:not(.disabled) {
@@ -128,8 +120,8 @@
             background-color: #f1f1f1;
             color: #bbb;
             cursor: default;
-            pointer-events: none;
             opacity: 0.6;
+            pointer-events: none;
         }
 
     .day-number {
@@ -143,5 +135,6 @@
         padding: 2px 8px;
         font-size: 0.8rem;
         margin-top: 4px;
+        display: inline-block;
     }
 </style>

@@ -5,53 +5,60 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- CSS for background and animations -->
+<!-- Background and style -->
 <style>
-    /* Fullscreen background */
     body {
         margin: 0;
         padding: 0;
         background: url('/images/Login/LoginPhoto.jpg') no-repeat center center fixed;
         background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
     }
 
-    /* Container that holds the form */
     .register-page {
-        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 40px 15px;
+        min-height: 100vh;
+        padding: 30px 15px;
     }
 
-    /* Animated form container */
     .register-container {
         background-color: rgba(255, 255, 255, 0.96);
-        padding: 40px;
+        padding: 40px 35px;
         border-radius: 20px;
-        max-width: 500px;
+        max-width: 520px;
         width: 100%;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
         animation: fadeInUp 1s ease;
+        margin-bottom: 30px;
     }
 
-        /* Buttons animation */
+        .register-container h2 {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .register-container .form-group,
+        .register-container .form-floating {
+            margin-bottom: 20px;
+        }
+
         .register-container button {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
             .register-container button:hover {
-                transform: scale(1.05);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transform: scale(1.03);
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
             }
 
-    /* Animation Keyframes */
     @@keyframes fadeInUp {
         from
 
     {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(40px);
     }
 
     to {
@@ -70,35 +77,57 @@
         .external-login-section button {
             margin: 6px;
         }
+
+    label {
+        font-weight: 500;
+    }
 </style>
 
-<!-- HTML content -->
+<!-- Form -->
 <div class="register-page">
     <div class="register-container">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2 class="text-center mb-4">Create a new account</h2>
+            <h2 class="text-center mb-4">Create Your Account</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="password" />
+            <div class="form-floating">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Password" />
                 <label asp-for="Input.Password">Password</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="confirm password" />
+            <div class="form-floating">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Confirm Password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Register</button>
         </form>
 
         @if ((Model.ExternalLogins?.Count ?? 0) > 0)

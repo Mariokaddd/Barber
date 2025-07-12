@@ -1,22 +1,24 @@
-﻿@model Barber.Models.SlotsViewModel
+﻿@model IEnumerable<Barber.Data.models.WorkingSchedule>
 
-@if (!Model.AvailableSlots.Any())
+@if (!Model.Any())
 {
-    <p class="text-center text-muted">Няма свободни часове.</p>
+    <p class="text-muted">Няма свободни часове за тази дата.</p>
 }
 else
 {
     <div class="d-flex flex-wrap justify-content-center gap-2">
-        @foreach (var ts in Model.AvailableSlots)
+        @foreach (var slot in Model)
         {
-            <form asp-action="Confirm" method="post" class="d-inline">
-                <input type="hidden" name="date" value="@Model.Date:yyyy-MM-dd" />
-                <input type="hidden" name="time" value="@ts" />
-                <input type="hidden" name="hairstyleId" value="@Model.HairstyleId" />
+            <form asp-controller="Reservation" asp-action="Confirm" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="date" value="@slot.Date:yyyy-MM-dd" />
+                <input type="hidden" name="time" value="@slot.Time" />
+                <input type="hidden" name="hairstyleId" value="@ViewBag.HairstyleId" />
                 <button type="submit" class="btn btn-outline-success m-1">
-                    @ts.ToString(@"hh\:mm")
+                    @slot.Time.ToString(@"hh\:mm")
                 </button>
             </form>
+
         }
     </div>
 }
