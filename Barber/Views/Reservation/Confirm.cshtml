@@ -1,0 +1,104 @@
+﻿@model Barber.Models.ReservationFormViewModel
+
+@{
+    ViewData["Title"] = "Потвърдете резервацията";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int slotId = (int)ViewBag.SlotId;
+}
+
+@section Styles {
+    <style>
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @@keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+    </style>
+}
+
+<div class="container my-5 fade-in">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-hover shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Потвърдете резервацията</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form asp-action="Confirm" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="SlotId" value="@slotId" />
+                        <input type="hidden" asp-for="HairstyleId" />
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="date" placeholder="Дата"
+                                           value="@Model.Date.ToString("dd.MM.yyyy")" readonly />
+                                    <label for="date"><i class="bi-calendar-date me-1"></i>Дата</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="hour" placeholder="Час"
+                                           value="@Model.Hour" readonly />
+                                    <label for="hour"><i class="bi-clock me-1"></i>Час</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="mb-3 form-floating">
+                            <input asp-for="FirstName" class="form-control" placeholder="Име" readonly />
+                            <label asp-for="FirstName"><i class="bi-person me-1"></i>Име</label>
+                        </div>
+
+                        <div class="mb-3 form-floating">
+                            <input asp-for="LastName" class="form-control" placeholder="Фамилия" readonly />
+                            <label asp-for="LastName"><i class="bi-person-badge me-1"></i>Фамилия</label>
+                        </div>
+
+                        <div class="mb-4 form-floating">
+                            <input asp-for="Phone" class="form-control" placeholder="Телефон" readonly />
+                            <label asp-for="Phone"><i class="bi-telephone me-1"></i>Телефон</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-2">
+                            <i class="bi-check2-circle me-2"></i>Потвърди резервацията
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.querySelector("button[type='submit']");
+            btn.addEventListener("mouseover", () => {
+                btn.classList.add("btn-lg");
+                setTimeout(() => btn.classList.remove("btn-lg"), 150);
+            });
+        });
+    </script>
+}

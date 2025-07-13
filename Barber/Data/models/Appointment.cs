@@ -11,9 +11,8 @@
         public string UserId { get; set; } = null!;
         public ApplicationUser User { get; set; } = null!;
 
-        [Required]
-        public int HairstyleId { get; set; }
-        public Hairstyle Hairstyle { get; set; } = null!;
+        public int? HairstyleId { get; set; }
+        public Hairstyle? Hairstyle { get; set; } = null!;
 
         [Required]
         [DataType(DataType.Date)]

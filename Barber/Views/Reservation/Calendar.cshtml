@@ -2,10 +2,12 @@
 
 @{
     ViewData["Title"] = "Календар за резервации";
+
     var ms = Model.MonthStart;
     var prevMonth = ms.AddMonths(-1);
     var nextMonth = ms.AddMonths(1);
     DateTime today = DateTime.Today;
+
     var ajaxUrl = Url.Action("SlotsAjax", "Reservation");
 }
 
@@ -67,10 +69,8 @@
                 const btn = e.target.closest("button.calendar-day");
                 if (!btn || btn.disabled) return;
 
-                // премахваме селекция от всички дни
                 grid.querySelectorAll("button.calendar-day")
                     .forEach(d => d.classList.remove("selected"));
-                // маркираме натиснатия
                 btn.classList.add("selected");
 
                 const date = btn.dataset.date;

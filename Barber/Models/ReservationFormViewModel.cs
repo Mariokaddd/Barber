@@ -4,11 +4,12 @@ namespace Barber.Models
 {
     public class ReservationFormViewModel
     {
+        public int? HairstyleId { get; set; }
         [Required]
         public DateTime Date { get; set; }
 
         [Required]
-        public string Hour { get; set; }
+        public string Hour { get; set; } = null!;
 
         [Required]
         [Display(Name = "Име")]

@@ -11,14 +11,12 @@ else
         {
             <form asp-controller="Reservation" asp-action="Confirm" method="post" class="d-inline">
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="date" value="@slot.Date:yyyy-MM-dd" />
-                <input type="hidden" name="time" value="@slot.Time" />
+                <input type="hidden" name="slotId" value="@slot.Id" />
                 <input type="hidden" name="hairstyleId" value="@ViewBag.HairstyleId" />
                 <button type="submit" class="btn btn-outline-success m-1">
                     @slot.Time.ToString(@"hh\:mm")
                 </button>
             </form>
-
         }
     </div>
 }
