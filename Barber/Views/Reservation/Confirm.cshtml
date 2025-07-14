@@ -43,7 +43,7 @@
                     <form asp-action="Confirm" method="post">
                         @Html.AntiForgeryToken()
 
-                        <input type="hidden" name="SlotId" value="@slotId" />
+                        <input type="hidden" name="slotId" value="@slotId" />
                         <input type="hidden" asp-for="HairstyleId" />
 
                         <div class="row g-3 mb-4">

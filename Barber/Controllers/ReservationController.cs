@@ -110,13 +110,12 @@ public class ReservationController : Controller
         return View(vm);
     }
 
-    // POST /Reservation/Confirm
     [HttpPost("Confirm")]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ConfirmPost(int slotId, ReservationFormViewModel model)
+    public async Task<IActionResult> Confirm(int SlotId, ReservationFormViewModel model)
     {
-        var slot = await _db.WorkingSchedules.FindAsync(slotId);
+        var slot = await _db.WorkingSchedules.FindAsync(SlotId);
         if (slot == null || !slot.IsAvailable)
         {
             TempData["Error"] = "Този час вече е зает или не съществува.";
@@ -137,6 +136,8 @@ public class ReservationController : Controller
             // Ако няма прически, няма HairstyleId тук
         });
 
+        slot.IsAvailable = false;
+
         await _db.SaveChangesAsync();
         return RedirectToAction("MyBookings");
     }
@@ -151,14 +152,27 @@ public class ReservationController : Controller
             return Forbid();
 
         var list = await _db.Appointments
-            .Include(a => a.Hairstyle) // махни ако няма Hairstyle
-            .Where(a => a.UserId == userId)
-            .OrderBy(a => a.Date)
-            .ThenBy(a => a.Time)
-            .ToListAsync();
+         .Where(a => a.UserId == userId)
+         .Select(a => new BookingViewModel
+         {
+             Date = a.Date,
+             Time = a.Time,
+             FirstName = a.User != null ? a.User.FirstName ?? "" : "",
+             LastName = a.User != null ? a.User.LastName ?? "" : "",
+             Phone = a.User != null ? a.User.PhoneNumber ?? "" : "",
+             IsBooked = a.IsBooked
+         })
+         .OrderBy(a => a.Date)
+         .ThenBy(a => a.Time)
+         .ToListAsync();
+
+        return View(list);
+
+
 
         return View(list);
     }
+
     public IActionResult BookSlotForm(DateTime date, string hour)
     {
         var model = new ReservationFormViewModel

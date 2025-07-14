@@ -9,14 +9,12 @@ else
     <div class="d-flex flex-wrap justify-content-center gap-2">
         @foreach (var slot in Model)
         {
-            <form asp-controller="Reservation" asp-action="Confirm" method="post" class="d-inline">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="slotId" value="@slot.Id" />
-                <input type="hidden" name="hairstyleId" value="@ViewBag.HairstyleId" />
-                <button type="submit" class="btn btn-outline-success m-1">
-                    @slot.Time.ToString(@"hh\:mm")
-                </button>
-            </form>
+            <a asp-controller="Reservation"
+               asp-action="Confirm"
+               asp-route-slotId="@slot.Id"
+               class="btn btn-outline-success m-1">
+                @slot.Time.ToString(@"hh\:mm")
+            </a>
         }
     </div>
 }

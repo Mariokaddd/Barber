@@ -58,5 +58,18 @@ namespace Barber.Controllers
 
             return View(slots);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AllAppointments()
+        {
+            var list = await _context.Appointments
+                .Include(a => a.User)
+                .OrderBy(a => a.Date)
+                .ThenBy(a => a.Time)
+                .ToListAsync();
+
+            return View(list);
+        }
+
     }
 }
