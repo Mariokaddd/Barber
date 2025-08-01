@@ -9,10 +9,10 @@
 
         [Required]
         public string UserId { get; set; } = null!;
-        public ApplicationUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; }
 
         public int? HairstyleId { get; set; }
-        public Hairstyle? Hairstyle { get; set; } = null!;
+        public Hairstyle? Hairstyle { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

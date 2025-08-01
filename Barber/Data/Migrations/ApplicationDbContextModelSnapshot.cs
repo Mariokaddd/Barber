@@ -43,7 +43,7 @@ namespace Barber.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorites", (string)null);
                 });
 
             modelBuilder.Entity("Barber.Data.models.AdminSchedule", b =>
@@ -68,7 +68,7 @@ namespace Barber.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdminSchedules");
+                    b.ToTable("AdminSchedules", (string)null);
                 });
 
             modelBuilder.Entity("Barber.Data.models.ApplicationUser", b =>
@@ -181,7 +181,7 @@ namespace Barber.Data.Migrations
                     b.HasIndex("Date", "Time")
                         .IsUnique();
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("Barber.Data.models.ContactMessage", b =>
@@ -208,7 +208,7 @@ namespace Barber.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ContactMessages");
+                    b.ToTable("ContactMessages", (string)null);
                 });
 
             modelBuilder.Entity("Barber.Data.models.Hairstyle", b =>
@@ -241,7 +241,7 @@ namespace Barber.Data.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Hairstyles");
+                    b.ToTable("Hairstyles", (string)null);
 
                     b.HasData(
                         new
@@ -305,7 +305,7 @@ namespace Barber.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Barber.Data.models.WorkingSchedule", b =>
@@ -330,7 +330,7 @@ namespace Barber.Data.Migrations
                     b.HasIndex("Date", "Time")
                         .IsUnique();
 
-                    b.ToTable("WorkingSchedules");
+                    b.ToTable("WorkingSchedules", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

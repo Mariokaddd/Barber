@@ -1,11 +1,27 @@
-﻿@using Barber.Data.models
-@model List<Appointment>
+﻿@model AppointmentFilterViewModel
 
-<h2 class="text-center">Всички резервации</h2>
+<h2 class="text-center">Филтрирани резервации</h2>
 
-@if (!Model.Any())
+<form method="get" asp-action="AllAppointments" class="mb-4">
+    <div class="row g-2">
+        <div class="col">
+            <input name="name" class="form-control" placeholder="Име или Фамилия" value="@Model.Name" />
+        </div>
+        <div class="col">
+            <input name="phoneNumber" class="form-control" placeholder="Телефон" value="@Model.PhoneNumber" />
+        </div>
+        <div class="col">
+            <input type="date" name="date" class="form-control" value="@(Model.Date?.ToString("yyyy-MM-dd"))" />
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Филтрирай</button>
+        </div>
+    </div>
+</form>
+
+@if (!Model.Results.Any())
 {
-    <p class="text-center text-muted">Няма направени резервации.</p>
+    <p class="text-muted">Няма съвпадения.</p>
 }
 else
 {
@@ -20,14 +36,15 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var r in Model)
+            @foreach (var r in Model.Results)
             {
                 <tr>
                     <td>@r.Date.ToShortDateString()</td>
                     <td>@r.Time.ToString(@"hh\:mm")</td>
-                    <td>@r.User.FirstName</td>
-                    <td>@r.User.LastName</td>
-                    <td>@r.User.PhoneNumber</td>
+                    <td>@(r.User?.FirstName ?? "—")</td>
+                    <td>@(r.User?.LastName ?? "—")</td>
+                    <td>@(r.User?.PhoneNumber ?? "—")</td>
+                    <td>@(r.Hairstyle != null ? r.Hairstyle.Title : "Без прическа")</td>
                 </tr>
             }
         </tbody>

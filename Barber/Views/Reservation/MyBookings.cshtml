@@ -17,6 +17,7 @@ else
                 <th>Фамилия</th>
                 <th>Телефон</th>
                 <th>Статус</th>
+                <th></th> <!-- бутон -->
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,12 @@ else
                     <td>@r.LastName</td>
                     <td>@r.Phone</td>
                     <td>@(r.IsBooked ? "Запазена" : "Свободна")</td>
+                    <td>
+                        <form asp-action="Cancel" asp-route-id="@r.Id" method="post" onsubmit="return confirm('Сигурни ли сте, че искате да откажете тази резервация?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Откажи</button>
+                        </form>
+
+                    </td>
                 </tr>
             }
         </tbody>

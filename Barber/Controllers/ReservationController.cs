@@ -153,8 +153,10 @@ public class ReservationController : Controller
 
         var list = await _db.Appointments
          .Where(a => a.UserId == userId)
+         .Include(a => a.User)  // Тук
          .Select(a => new BookingViewModel
          {
+             Id = a.Id,
              Date = a.Date,
              Time = a.Time,
              FirstName = a.User != null ? a.User.FirstName ?? "" : "",
@@ -165,9 +167,6 @@ public class ReservationController : Controller
          .OrderBy(a => a.Date)
          .ThenBy(a => a.Time)
          .ToListAsync();
-
-        return View(list);
-
 
 
         return View(list);
@@ -182,4 +181,30 @@ public class ReservationController : Controller
         };
         return PartialView("_BookSlotForm", model);
     }
+
+    [HttpPost("Cancel/{id}")]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Cancel(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Forbid();
+
+        var appointment = await _db.Appointments
+            .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
+
+        if (appointment == null)
+        {
+            TempData["Error"] = "Резервацията не е намерена.";
+            return RedirectToAction("MyBookings");
+        }
+
+        _db.Appointments.Remove(appointment);
+        await _db.SaveChangesAsync();
+
+        TempData["Success"] = "Резервацията беше изтрита.";
+        return RedirectToAction("MyBookings");
+    }
+
 }

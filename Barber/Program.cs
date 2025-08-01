@@ -40,6 +40,7 @@ namespace Barber
 
 
 
+
             builder.Services.AddScoped<ScheduleService>();
 
             var app = builder.Build();

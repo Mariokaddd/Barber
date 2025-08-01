@@ -1,5 +1,6 @@
 ﻿using Barber.Data;
 using Barber.Data.models;
+using Barber.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -60,15 +61,35 @@ namespace Barber.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllAppointments()
+        public async Task<IActionResult> AllAppointments(string? name, string? phoneNumber, DateTime? date)
         {
-            var list = await _context.Appointments
+            var query = _context.Appointments
                 .Include(a => a.User)
-                .OrderBy(a => a.Date)
-                .ThenBy(a => a.Time)
+                .Include(a => a.Hairstyle) // ако искаш да имаш данните за прическата
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(a => a.User.FirstName.Contains(name) || a.User.LastName.Contains(name));
+
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+                query = query.Where(a => a.User.PhoneNumber.Contains(phoneNumber));
+
+            if (date.HasValue)
+                query = query.Where(a => a.Date == date.Value.Date);
+
+            var result = await query
+                .OrderBy(a => a.Date).ThenBy(a => a.Time)
                 .ToListAsync();
 
-            return View(list);
+            var model = new AppointmentFilterViewModel
+            {
+                Name = name,
+                PhoneNumber = phoneNumber,
+                Date = date,
+                Results = result
+            };
+
+            return View(model);
         }
 
     }

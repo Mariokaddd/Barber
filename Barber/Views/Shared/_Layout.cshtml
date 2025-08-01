@@ -127,6 +127,12 @@
                         {
                             <li><a asp-controller="Schedule" asp-action="Create">Настрой График</a></li>
                         }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AllAppointments">Всички резервации</a>
+                            </li>
+                        }
                         <li class="nav-item"><a class="nav-link" asp-controller="Reservation" asp-action="Calendar">Запази час</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Reservation" asp-action="MyBookings">Моите резервации</a></li>
 
